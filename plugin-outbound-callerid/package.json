@@ -1,6 +1,6 @@
 {
   "name": "plugin-outbound-callerid",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "postinstall": "flex-plugin pre-script-check"
@@ -8,8 +8,7 @@
   "dependencies": {
     "react": "16.5.2",
     "react-dom": "16.5.2",
-    "@twilio/flex-plugin-scripts": "5.0.4",
-    "react-emotion": "9.2.12"
+    "@twilio/flex-plugin-scripts": "6.1.1"
   },
   "devDependencies": {
     "@twilio/flex-ui": "^1",

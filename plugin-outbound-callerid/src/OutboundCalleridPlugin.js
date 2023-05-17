@@ -22,21 +22,70 @@ export default class OutboundCalleridPlugin extends FlexPlugin {
    * @param manager { import('@twilio/flex-ui').Manager }
    */
   async init(flex, manager) {
+
+    manager.strings.NoTasks = "No tasks, make some coffee!";
+    flex.MainHeader.defaultProps.logoUrl = "https://honusquare-product-images.s3.us-west-1.amazonaws.com/logo/HS_White_02.png";
+
+    // update task list with customer details
+    manager.strings.TaskLineCallReserved= "Incoming call for {{task.attributes.to}}";
+
+    manager.strings.TaskInfoPanelContent = `
+        <h1>TASK CONTEXT</h1>
+        <h2>Task type</h2>
+        <p>{{task.channelType}}</p>
+        <h2>Task created on</h2>
+        <p>{{task.dateCreated}}</p>
+        <h2>Task priority</h2>
+        <p>{{task.priority}}</p>
+        <h2>Task queue</h2>
+        <p>{{task.queueName}}</p>
+        <h2>Task Sid</h2>
+        <p>{{task.taskSid}}</p>
+        <h2>Reservation Sid</h2>
+        <p>{{task.sid}}</p>
+        <hr />
+        <h1>CUSTOMER CONTEXT</h1>
+        <h2>Customer name / phone number</h2>
+        <p>{{task.defaultFrom}}</p>
+        <h2>Country</h2>
+        <p>{{task.attributes.caller_country}}</p>
+        <h2>Brand phone number</h2>
+        <p>{{task.attributes.to}}</p>
+        <p>
+        <ul>
+        <li>Honusquare: +1 424 500 6076</li>
+        <li>Charlene K: +1 213 900 3186</li>
+        </ul></p>
+        `;
+  
+
+
     this.registerReducers(manager);
 
-    let callerIds = [];
+    let callerIds = [
+      {
+        'phoneNumber': '+14245006076',
+        'friendlyName': 'Honusquare'
+      },
+      {
+        'phoneNumber': '+12139003186',
+        'friendlyName': 'Charlene K'
+      }
+    ];
+
 
     const configFile = "/config.json";
     let data = await ConfigUtil.getAsset(configFile);
     if (data) {
       console.log(PLUGIN_NAME, 'Asset data: ', data);
       callerIds = data.callerIds;
-    } else {
-      callerIds = [{
-        "phoneNumber": manager.serviceConfiguration.outbound_call_flows.default.caller_id,
-        "friendlyName": "Default"
-      }]
-    }
+    } 
+    // else {
+    //   callerIds = [{
+    //     "phoneNumber": manager.serviceConfiguration.outbound_call_flows.default.caller_id,
+    //     "friendlyName": "Default"
+    //   }]
+    // }
 
 
 
